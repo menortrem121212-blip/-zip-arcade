@@ -6,7 +6,7 @@ const env = () => {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const password = process.env.ADMIN_PASSWORD;
   if (!url || !key || !password) throw new Error("Netlify ainda não foi configurado: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY e ADMIN_PASSWORD são obrigatórios.");
-  return {url:key?url.replace(/\/$/,""):url,key,password};
+  return {url:url.replace(/\/$/,""),key,password};
 };
 const sb = async (path, options={}) => {
   const {url,key}=env();
