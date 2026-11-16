@@ -1,0 +1,32 @@
+ZIP ARCADE — BIBLIOTECA PÚBLICA + PAINEL ADMIN
+
+ARQUITETURA
+- Netlify: hospeda o site e a Function /api/* (serverless; não é necessário administrar um servidor próprio).
+- Supabase Storage: guarda os ZIPs publicados.
+- Supabase Postgres: guarda catálogo, versão e caminho de cada jogo.
+- Senha do admin: configurada como variável segura no Netlify (use a senha definida por você no ambiente do Netlify).
+
+CONFIGURAÇÃO
+1. No Supabase, o bucket privado `zip-arcade` deve existir.
+2. No SQL Editor, execute `supabase-setup.sql`.
+3. Publique esta pasta no Netlify.
+4. No Netlify, em Environment variables, crie:
+   SUPABASE_URL = URL do seu projeto Supabase
+   SUPABASE_SERVICE_ROLE_KEY = sua chave secreta/service_role do projeto Supabase
+   ADMIN_PASSWORD = sua senha de administrador
+5. Deixe essas variáveis disponíveis para Functions. Nunca coloque a service_role no HTML.
+6. Faça um novo deploy depois de configurar as variáveis.
+
+USO
+- Público: vê somente os jogos publicados no mesmo link.
+- Admin: toca em Abrir Admin, informa a senha configurada no Netlify e entra no painel.
+- Adicionar: seleciona um ZIP e publica.
+- Testar: abre o ZIP selecionado localmente antes da publicação.
+- Editar: seleciona Editar, escolhe o novo ZIP e publica; a nova versão substitui a referência pública e a versão anterior é removida do Storage.
+- Apagar: remove o jogo do catálogo e tenta remover o ZIP correspondente do Storage.
+
+SEGURANÇA
+A senha não fica escrita no HTML. A Function compara a senha recebida com ADMIN_PASSWORD no ambiente do Netlify. A service_role fica somente no ambiente da Function.
+
+JOGOS
+Os ZIPs publicados são baixados pelo navegador, extraídos em memória e executados no player. Jogos HTML5 com index.html e caminhos relativos são os mais compatíveis.
